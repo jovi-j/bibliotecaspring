@@ -12,6 +12,10 @@ import bibliotecaspring.models.Aluno;
 
 @Controller
 public class AlunoController {
+	@RequestMapping("/aluno/form")
+	public String form() {
+		return "aluno/form";
+	}
 
 
 	@PostMapping("/aluno")
@@ -34,7 +38,7 @@ public class AlunoController {
 	public ModelAndView listar(){
 		AlunoDAO aDAO = new AlunoDAO();
 		List<Aluno> lista = aDAO.getAlunos();
-		ModelAndView model = new ModelAndView("aluno/lista");
+		ModelAndView model = new ModelAndView("lista");
 		model.addObject("alunos", lista);
 		return model;
 	}

@@ -12,6 +12,11 @@ import bibliotecaspring.models.Livro;
 
 @Controller
 public class LivroController {
+	
+	@RequestMapping("/livro/form")
+	public String form() {
+		return "livro/form";
+	}
 
 	@PostMapping("/livro")
 	public String adicionar(Livro livro) {

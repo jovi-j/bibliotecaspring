@@ -12,6 +12,10 @@ import bibliotecaspring.models.Emprestimo;
 
 @Controller
 public class EmprestimoController {
+	@RequestMapping("/emprestimo/form")
+	public String form() {
+		return "emprestimo/form";
+	}
 
 
 	@PostMapping("/emprestimo")
@@ -50,7 +54,7 @@ public class EmprestimoController {
 	public ModelAndView listarEmprestimosAtrasados(){
 		EmprestimoDAO eDAO = new EmprestimoDAO();
 		List<Emprestimo> lista = eDAO.getEmprestimosAtrasados();
-		ModelAndView model = new ModelAndView("emprestimo/lista");
+		ModelAndView model = new ModelAndView("emprestimo/listaAtrasados");
 		model.addObject("emprestimos", lista);
 		return model;
 	}
@@ -59,7 +63,7 @@ public class EmprestimoController {
 	public ModelAndView listarEmprestimosAtivos(){
 		EmprestimoDAO eDAO = new EmprestimoDAO();
 		List<Emprestimo> lista = eDAO.getEmprestimosAtivos();
-		ModelAndView model = new ModelAndView("emprestimo/lista");
+		ModelAndView model = new ModelAndView("emprestimo/listaAtivos");
 		model.addObject("emprestimos", lista);
 		return model;
 	}

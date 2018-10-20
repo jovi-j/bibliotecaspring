@@ -83,6 +83,7 @@ public class AlunoDAO {
 				Aluno a = new Aluno();
 				a.setId(rs.getLong("id"));
 				a.setNome(rs.getString("nome"));
+				a.setCpf(rs.getString("cpf"));
 				a.setMatricula(rs.getInt("matricula"));
 				a.setEndereco(rs.getString("endereco"));
 				Calendar dataNascimento = Calendar.getInstance();
