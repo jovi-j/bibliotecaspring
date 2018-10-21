@@ -25,10 +25,11 @@ public class AppWebConfiguration extends WebMvcConfigurationSupport {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 	        registry
-	          .addResourceHandler("/resources/**")
-	          .addResourceLocations("/", "classpath:/WebContent/WEB-INF/resources/")
-	          .setCachePeriod(5)
+	          .addResourceHandler("/resources/**")    
+	          .addResourceLocations("/resources/", "/resources/frameworks/", "/resources/frameworks/bulma/")
+	          .setCachePeriod(3600)
 	          .resourceChain(true);
+	          
 	}
 	
 }

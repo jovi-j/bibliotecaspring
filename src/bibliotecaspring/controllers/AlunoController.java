@@ -38,7 +38,7 @@ public class AlunoController {
 	public ModelAndView listar(){
 		AlunoDAO aDAO = new AlunoDAO();
 		List<Aluno> lista = aDAO.getAlunos();
-		ModelAndView model = new ModelAndView("lista");
+		ModelAndView model = new ModelAndView("aluno/lista");
 		model.addObject("alunos", lista);
 		return model;
 	}
