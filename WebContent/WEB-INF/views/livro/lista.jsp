@@ -12,16 +12,17 @@
 </head>
 <body>
 
-	<h1>Lista de contatos:</h1>
+	<h1>Lista de Livros:</h1>
 
 	<table border="2">
 		<thead>
 			<tr>
-				<th>Nome</th>
-				<th>Email</th>
-				<th>Endereï¿½o</th>
-				<th>Data de Nascimento</th>
-				<th>Apagar</th>
+				<th>Titulo</th>
+				<th>Autor</th>
+				<th>Ano De Publicacao</th>
+				<th>Editora</th>
+				<th>Edição</th>
+				<th>Fazer Emprestimo</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -34,9 +35,9 @@
 					<td>${contato.endereco }</td>
 					<td>${contato.dataNascimento.time }</td>
 					<td>
-						<form class="btn-apagar" action="/agendaspring/contatos/delete"
+						<form class="" action="/agendaspring/emprestimo/inserir"
 							method="post">
-							<input type="hidden" name="id" value="${contato.id}" />
+							<input type="text" name="" value="${contato.id}" />
 							<button type="submit"></button>
 						</form>
 					</td>

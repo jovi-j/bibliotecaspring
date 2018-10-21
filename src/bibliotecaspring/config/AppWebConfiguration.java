@@ -2,14 +2,18 @@ package bibliotecaspring.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import bibliotecaspring.controllers.HomeController;
 
 @EnableWebMvc
 @ComponentScan(basePackageClasses = {HomeController.class})
-public class AppWebConfiguration {
+@Configuration
+public class AppWebConfiguration extends WebMvcConfigurationSupport {
 	
 	@Bean
 	public InternalResourceViewResolver internalResourceViewResolver() {
@@ -17,6 +21,14 @@ public class AppWebConfiguration {
 		resolver.setPrefix("/WEB-INF/views/"); 
 		resolver.setSuffix(".jsp");
 		return resolver;
+	}
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	        registry
+	          .addResourceHandler("/resources/**")
+	          .addResourceLocations("/", "classpath:/WebContent/WEB-INF/resources/")
+	          .setCachePeriod(5)
+	          .resourceChain(true);
 	}
 	
 }
