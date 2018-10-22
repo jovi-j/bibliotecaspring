@@ -41,27 +41,7 @@ public class EmprestimoDAO {
 		return true;
 	}
 
-	// Um m�todo pra colocar o atributo "devolvido" no "inserir", pq o java n aceita
-	// dois comandos SQL em um trecho s�
 
-//	public void verificarLivro(Long idLivro) {
-//		
-//		// Sql, pegue esse ID, veja qual livro tem esse id, e coloque o campo "emprestado" dele pra verdadeiro
-//		String sql = "update livros set emprestado = true where id = ?;";
-//
-//		try {
-//			PreparedStatement stmt = connection.prepareStatement(sql);
-//			stmt.setLong(1, idLivro);
-//			stmt.execute();
-//			stmt.close();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//	}
-
-	// Aqui � a quantidade de livros que um aluno pegou
 
 	public boolean verificarAluno(Long idAluno) {
 
@@ -128,8 +108,7 @@ public class EmprestimoDAO {
 
 	public boolean devolucao(Emprestimo emprestimo) {
 
-		// Update = Edita uma linha do Banco de dados(no caso, edita a dataDevolucao
-		// passando um idAluno e idLivro)
+		
 
 		String sql = "update emprestimos set dataDevolucao=? where idAluno=? and idLivro=?;";
 		try {
@@ -137,10 +116,7 @@ public class EmprestimoDAO {
 			stmt.setDate(1, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
 			stmt.setLong(2, emprestimo.getAluno().getId());
 			stmt.setLong(3, emprestimo.getLivro().getId());
-//			// Esse "devolucao2" veio dali de baixo, pq o sql n deixa executar dois comandos
-//			// diferentes de uma s�
-//			// vez
-//			devolucao2(idLivro);
+			
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
@@ -150,25 +126,6 @@ public class EmprestimoDAO {
 		return true;
 	}
 
-	// Mesma coisa que o "inserir2", apenas pq o sql n�o aceita dois comandos
-
-//	public void devolucao2(Long idLivro) {
-//		String sql = "update livros set emprestado=false where id=?;";
-//		// Isso aqui edita o atributo "emprestado" do livro de verdadeiro pra falso
-//		try {
-//			PreparedStatement stmt = connection.prepareStatement(sql);
-//			stmt.setLong(1, idLivro);
-//
-//			stmt.execute();
-//			stmt.close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//
-//		}
-//
-//	}
-
-	// pesquisar emprestimos pela matricula
 
 	public List<Emprestimo> pesquisarPorMatricula(int matriculaAluno) {
 		List<Emprestimo> result = new ArrayList<>();
@@ -182,37 +139,18 @@ public class EmprestimoDAO {
 			while (rs.next()) {
 
 				Emprestimo e = new Emprestimo();
-
 				Livro livro = new Livro();
-				// Novo objeto livro
-
-				livro.setId(rs.getLong("idLivro"));
-				// Boto o id do novo livro
-
-				e.setLivro(livro);
-				// Coloco esse novo livro no emprestimo
-
 				Aluno aluno = new Aluno();
-				// Novo aluno
-
-				aluno.setId(rs.getLong("idAluno"));
-				// Boto o id do novo aluno
-
-				e.setAluno(aluno);
-				// Coloco esse novo aluno no emprestimo
-
-				// Datas
-
 				Calendar data = Calendar.getInstance();
-
-				// pego a data de emprestimo que veio do SQL
+				
+				livro.setId(rs.getLong("idLivro"));
+				aluno.setId(rs.getLong("idAluno"));
 				data.setTime(rs.getDate("dataEmprestimo"));
-				// coloco no emprestimo
-				e.setDataEmprestimo(data);
-
-				// pego a data de Devolucao que veio do SQL
 				data.setTime(rs.getDate("dataDevolucao"));
-				// coloco no emprestimo
+				
+				e.setAluno(aluno);
+				e.setLivro(livro);
+				e.setDataEmprestimo(data);
 				e.setDataDevolucao(data);
 
 				result.add(e);
