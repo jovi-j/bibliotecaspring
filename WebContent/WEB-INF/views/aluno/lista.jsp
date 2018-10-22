@@ -28,6 +28,7 @@
 						<td>${aluno.cpf }</td>
 						<td>${aluno.endereco }</td>
 						<td>${aluno.dataNascimento.time }</td>
+				
 
 					</tr>
 				</c:forEach>

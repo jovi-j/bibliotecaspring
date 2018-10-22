@@ -22,13 +22,13 @@ public class EmprestimoDAO {
 
 	public boolean inserir(Emprestimo emprestimo) {
 
-		String sql = "insert into emprestimos (idAluno, idLivro, dataDevolucao) values (?, ?, ?);";
+		String sql = "insert into emprestimos (idAluno, idLivro, dataEmprestimo) values (?, ?, ?);";
 
 		try {
 			PreparedStatement stmt = connection.prepareStatement(sql);
 			stmt.setLong(1, emprestimo.getAluno().getId());
 			stmt.setLong(2, emprestimo.getLivro().getId());
-			stmt.setDate(3, new java.sql.Date(emprestimo.getDataDevolucao().getTimeInMillis()));
+			stmt.setDate(3, new java.sql.Date(emprestimo.getDataEmprestimo().getTimeInMillis()));
 
 			stmt.execute();
 			stmt.close();
@@ -126,7 +126,7 @@ public class EmprestimoDAO {
 
 	}
 
-	public boolean devolucao(long idAluno, long idLivro) {
+	public boolean devolucao(Emprestimo emprestimo) {
 
 		// Update = Edita uma linha do Banco de dados(no caso, edita a dataDevolucao
 		// passando um idAluno e idLivro)
@@ -135,8 +135,8 @@ public class EmprestimoDAO {
 		try {
 			PreparedStatement stmt = connection.prepareStatement(sql);
 			stmt.setDate(1, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
-			stmt.setLong(2, idAluno);
-			stmt.setLong(3, idLivro);
+			stmt.setLong(2, emprestimo.getAluno().getId());
+			stmt.setLong(3, emprestimo.getLivro().getId());
 //			// Esse "devolucao2" veio dali de baixo, pq o sql n deixa executar dois comandos
 //			// diferentes de uma s�
 //			// vez

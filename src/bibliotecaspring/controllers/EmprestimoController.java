@@ -1,5 +1,6 @@
 package bibliotecaspring.controllers;
 
+import java.util.Calendar;
 import java.util.List;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.stereotype.Controller;
@@ -24,13 +25,12 @@ public class EmprestimoController {
 
 
 	@PostMapping("/emprestimo")
-	public String adicionar(int matriculaAluno , Long idLivro) {
+	public String adicionar(int matriculaAluno , long idLivro) {
 		
 		AlunoDAO aDAO = new AlunoDAO();
 		Aluno aluno = new Aluno();
 		aluno = aDAO.getByMatricula(matriculaAluno);
 		long idAluno = aluno.getId();
-				
 				
 		LivroDAO lDAO = new LivroDAO();
 		Livro livro = new Livro();
@@ -39,6 +39,7 @@ public class EmprestimoController {
 		Emprestimo emprestimo = new Emprestimo();
 		emprestimo.setAluno(aluno);
 		emprestimo.setLivro(livro);
+		emprestimo.setDataEmprestimo(Calendar.getInstance());
 		
 		
 		EmprestimoDAO eDAO = new EmprestimoDAO();
@@ -49,15 +50,24 @@ public class EmprestimoController {
 	}
 	
 	@PostMapping("/emprestimo/devolucao")
-	public String devolucao(int matriculaAluno, long idLivro){
+	public String devolucao(long idAluno, long idLivro){
+		
+		Aluno aluno = new Aluno();
+		Livro livro = new Livro();
+		Emprestimo emprestimo = new Emprestimo();
+		
 		
 		AlunoDAO aDAO = new AlunoDAO();
-		Aluno aluno = new Aluno();
-		aluno = aDAO.getByMatricula(matriculaAluno);
-		long idAluno = aluno.getId();
-				
+		LivroDAO lDAO = new LivroDAO();
 		EmprestimoDAO eDAO = new EmprestimoDAO();
-		eDAO.devolucao(idAluno, idLivro);
+		
+		aluno = aDAO.getById(idAluno);
+		livro = lDAO.getById(idLivro);
+		
+		emprestimo.setAluno(aluno);		
+		emprestimo.setLivro(livro);
+		
+		eDAO.devolucao(emprestimo);
 		
 		return "redirect:/emprestimo";
 
