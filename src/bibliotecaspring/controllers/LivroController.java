@@ -43,6 +43,15 @@ public class LivroController {
 		return "redirect:/livro";
 
 	}
+	@PostMapping("/livro/buscar")
+	public ModelAndView buscar(String titulo){
+		LivroDAO lDAO = new LivroDAO();
+		List<Livro> lista = lDAO.pesquisar(titulo);
+		ModelAndView model = new ModelAndView("livro/lista");
+		model.addObject("livros", lista);
+		return model;
+	}
+	
 
 
 

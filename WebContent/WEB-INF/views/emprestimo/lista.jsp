@@ -1,6 +1,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ include file="/resources/header.jsp"%>
@@ -11,9 +12,10 @@
 	<h1 class="title">Lista de Emprestimos</h1>
 	<h2 class="subtitle">Clique nos botões abaixo para filtrar os emprestimos:</h2>
 <div class="container">
-	<a href="/bibliotecaspring/emprestimo/atrasados" class="button is-one-third is-danger" style="margin-bottom: 0.5rem; width: 20%">Emprestimos Atrasados</a>
-	<a href="/bibliotecaspring/emprestimo/ativos" class="button is-one-third is-success" style="margin-bottom: 0.5rem; width: 20%">Emprestimos Ativos</a>
 	<a href="/bibliotecaspring/emprestimo/" class="button is-one-third is-info" style="margin-bottom: 0.5rem; width: 20%">Todos os Emprestimos</a>	
+	<a href="/bibliotecaspring/emprestimo/ativos" class="button is-one-third is-success" style="margin-bottom: 0.5rem; width: 20%">Emprestimos Ativos</a>
+	<a href="/bibliotecaspring/emprestimo/atrasados" class="button is-one-third is-danger" style="margin-bottom: 0.5rem; width: 20%">Emprestimos Atrasados</a>
+	
 </div>
 		<table class="table" border="2">
 			<thead>
@@ -42,7 +44,7 @@
 							</td>
 						</c:if>
 						<c:if test="${not empty emprestimo.dataDevolucao}">
-							<td>${emprestimo.dataDevolucao.time}</td>
+							<td><fmt:formatDate value="${emprestimo.dataDevolucao.time}" pattern="dd/MM/yyyy" /></td>
 						</c:if>
 
 					</tr>
