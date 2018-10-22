@@ -27,11 +27,19 @@ public class EmprestimoController {
 
 
 	@PostMapping("/emprestimo")
-	public String adicionar(int matriculaAluno , long idLivro) {
+	public ModelAndView adicionar(int matriculaAluno , long idLivro) {
 		
 		AlunoDAO aDAO = new AlunoDAO();
 		Aluno aluno = new Aluno();
 		aluno = aDAO.getByMatricula(matriculaAluno);
+		
+		if (aluno == null) { 
+			ModelAndView model = new ModelAndView("/erro");
+			model.addObject("erro", "Matricula " + matriculaAluno + " não existe no banco de dados.");
+			return model; 
+			
+		}
+		
 		long idAluno = aluno.getId();
 				
 		LivroDAO lDAO = new LivroDAO();
@@ -49,13 +57,21 @@ public class EmprestimoController {
 		if (eDAO.verificarAluno(idAluno)) {
  			if(eDAO.verificarLivro(idLivro)) {
  				eDAO.inserir(emprestimo);
- 				return "redirect:/emprestimo";
+ 				ModelAndView model = new ModelAndView("/emprestimo");
+ 				return model;
+ 			
+ 			
  			} else {
- 	 			return "/erro";
+ 				ModelAndView model = new ModelAndView("/erro");
+ 				model.addObject("erro", "Livro já está emprestado.");
+ 				return model;
+ 				
  			}
  		
  		} else { 
- 			return "/erro"; 
+ 			ModelAndView model = new ModelAndView("/erro");
+			model.addObject("erro", "Aluno já possui 3 emprestimos.");
+			return model; 
  		}
 	}
 	
