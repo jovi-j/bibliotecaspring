@@ -57,8 +57,7 @@ public class EmprestimoController {
 		if (eDAO.verificarAluno(idAluno)) {
  			if(eDAO.verificarLivro(idLivro)) {
  				eDAO.inserir(emprestimo);
- 				ModelAndView model = new ModelAndView("/emprestimo");
- 				return model;
+ 				return listarEmprestimos();
  			
  			
  			} else {

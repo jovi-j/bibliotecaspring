@@ -41,8 +41,6 @@ public class EmprestimoDAO {
 		return true;
 	}
 
-
-
 	public boolean verificarAluno(Long idAluno) {
 
 		String sql = "select * from emprestimos where idAluno = ? and dataDevolucao IS NULL;";
@@ -108,15 +106,13 @@ public class EmprestimoDAO {
 
 	public boolean devolucao(Emprestimo emprestimo) {
 
-		
-
 		String sql = "update emprestimos set dataDevolucao=? where idAluno=? and idLivro=?;";
 		try {
 			PreparedStatement stmt = connection.prepareStatement(sql);
 			stmt.setDate(1, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
 			stmt.setLong(2, emprestimo.getAluno().getId());
 			stmt.setLong(3, emprestimo.getLivro().getId());
-			
+
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
@@ -125,7 +121,6 @@ public class EmprestimoDAO {
 		}
 		return true;
 	}
-
 
 	public List<Emprestimo> pesquisarPorMatricula(int matriculaAluno) {
 		List<Emprestimo> result = new ArrayList<>();
@@ -142,12 +137,12 @@ public class EmprestimoDAO {
 				Livro livro = new Livro();
 				Aluno aluno = new Aluno();
 				Calendar data = Calendar.getInstance();
-				
+
 				livro.setId(rs.getLong("idLivro"));
 				aluno.setId(rs.getLong("idAluno"));
 				data.setTime(rs.getDate("dataEmprestimo"));
 				data.setTime(rs.getDate("dataDevolucao"));
-				
+
 				e.setAluno(aluno);
 				e.setLivro(livro);
 				e.setDataEmprestimo(data);
@@ -182,7 +177,8 @@ public class EmprestimoDAO {
 				data.setTime(rs.getDate("dataEmprestimo"));
 				e.setDataEmprestimo(data);
 
-				// Como houveram problemas com a data de devolu��o ser nula, ent�o eu fiz uma
+				// Como houveram problemas com a data de devolu��o ser nula, ent�o eu fiz
+				// uma
 				// l�gica
 
 				// se a data de devolucao que veio do SQL n�o estiver vazia(null)
@@ -215,25 +211,25 @@ public class EmprestimoDAO {
 
 		try {
 			PreparedStatement stmt = this.connection
-					.prepareStatement("select * from emprestimos where dataDevolucao IS NULL;");
+					.prepareStatement("select * from emprestimos where dataDevolucao IS NULL and dataEmprestimo < ?;");
+			Calendar data = Calendar.getInstance();
+			stmt.setDate(1, new Date(data.getTimeInMillis() - 14 * 24 * 60 * 60 * 1000));
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
 
 				Emprestimo e = new Emprestimo();
-				Calendar data = Calendar.getInstance();
-				data.setTime(rs.getDate("dataEmprestimo"));
-				e.setDataEmprestimo(data);
+				Calendar dataEmprestimo = Calendar.getInstance();
+				dataEmprestimo.setTime(rs.getDate("dataEmprestimo"));
+				e.setDataEmprestimo(dataEmprestimo);
+				Aluno a = new AlunoDAO().getById(rs.getLong("idAluno"));
+				Livro l = new LivroDAO().getById(rs.getLong("idLivro"));
+				e.setAluno(a);
+				e.setLivro(l);
 
-				if (e.getDataEmprestimo().getTimeInMillis() + 14 * 24 * 60 * 60 * 1000 < data.getTimeInMillis()) {
-					Aluno a = new AlunoDAO().getById(rs.getLong("idAluno"));
-					Livro l = new LivroDAO().getById(rs.getLong("idLivro"));
-					e.setAluno(a);
-					e.setLivro(l);
+				result.add(e);
 
-					result.add(e);
 
-				}
 			}
 			rs.close();
 			stmt.close();
@@ -277,8 +273,7 @@ public class EmprestimoDAO {
 
 	public boolean remover(Long id) {
 		try {
-			PreparedStatement stmt = connection
-					.prepareStatement("delete from emprestimos where id=?;");
+			PreparedStatement stmt = connection.prepareStatement("delete from emprestimos where id=?;");
 			stmt.setLong(1, id);
 			stmt.execute();
 			stmt.close();
